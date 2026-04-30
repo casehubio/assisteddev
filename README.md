@@ -2,7 +2,7 @@
 
 > **Note:** This is a placeholder name. The repository name will change when the product name is finalised.
 
-AI-assisted software development application built on the [CaseHub](https://github.com/casehubio/casehub-parent) platform foundation.
+AI-assisted software development application built on the [CaseHub](https://github.com/casehubio/parent) platform foundation.
 
 ## What This Is
 
@@ -17,8 +17,8 @@ AI-assisted software development application built on the [CaseHub](https://gith
 
 ## Current Status
 
-Early development. Foundation capabilities being built in parallel in the ecosystem repos — see [platform roadmap](https://github.com/casehubio/casehub-parent/issues/7).
+Early development. Foundation capabilities being built in parallel in the ecosystem repos — see [platform roadmap](https://github.com/casehubio/parent/issues/7).
 
 ## Platform Context
 
-This repo is part of the [casehubio ecosystem](https://github.com/casehubio/casehub-parent/blob/main/docs/PLATFORM.md). The foundation layer (casehub-engine, quarkus-qhorus, etc.) is domain-agnostic. This application layer provides the software engineering domain logic on top of those primitives.
+This repo is part of the [casehubio ecosystem](https://github.com/casehubio/parent/blob/main/docs/PLATFORM.md). The foundation layer (casehub-engine, quarkus-qhorus, etc.) is domain-agnostic. This application layer provides the software engineering domain logic on top of those primitives.
