@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>io.casehub</groupId>
+    <artifactId>casehub-parent</artifactId>
+    <version>0.2-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>casehub-devtown</artifactId>
+  <version>0.2-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>CaseHub DevTown</name>
+  <description>AI-assisted software development application on the CaseHub platform</description>
+  <url>https://github.com/casehubio/devtown</url>
+
+  <modules>
+    <module>devtown-domain</module>
+    <module>devtown-review</module>
+    <module>devtown-queue</module>
+    <module>devtown-github</module>
+    <module>devtown-app</module>
+  </modules>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- casehub-engine-api — not in casehub-parent BOM -->
+      <dependency>
+        <groupId>io.casehub</groupId>
+        <artifactId>casehub-engine-api</artifactId>
+        <version>${casehub.version}</version>
+      </dependency>
+
+      <!-- casehub-qhorus-api — not in casehub-parent BOM -->
+      <dependency>
+        <groupId>io.casehub</groupId>
+        <artifactId>casehub-qhorus-api</artifactId>
+        <version>${casehub.version}</version>
+      </dependency>
+
+      <!-- casehub-connectors — not in casehub-parent BOM -->
+      <dependency>
+        <groupId>io.casehub</groupId>
+        <artifactId>casehub-connectors</artifactId>
+        <version>${casehub.version}</version>
+      </dependency>
+
+      <!-- devtown inter-module -->
+      <dependency>
+        <groupId>io.casehub</groupId>
+        <artifactId>devtown-domain</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.casehub</groupId>
+        <artifactId>devtown-review</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.casehub</groupId>
+        <artifactId>devtown-queue</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.casehub</groupId>
+        <artifactId>devtown-github</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>casehubio GitHub Packages</name>
+      <url>https://maven.pkg.github.com/casehubio/devtown</url>
+    </repository>
+    <snapshotRepository>
+      <id>github</id>
+      <name>casehubio GitHub Packages</name>
+      <url>https://maven.pkg.github.com/casehubio/devtown</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+</project>
