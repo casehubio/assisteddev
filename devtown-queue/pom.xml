@@ -9,5 +9,5 @@
     <version>0.2-SNAPSHOT</version>
   </parent>
   <artifactId>devtown-queue</artifactId>
-  <name>DevTown Queue</name>
+  <name>DevTown :: Queue</name>
 </project>

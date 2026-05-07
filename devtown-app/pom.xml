@@ -9,5 +9,5 @@
     <version>0.2-SNAPSHOT</version>
   </parent>
   <artifactId>devtown-app</artifactId>
-  <name>DevTown Application</name>
+  <name>DevTown :: App</name>
 </project>

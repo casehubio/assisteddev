@@ -9,5 +9,5 @@
     <version>0.2-SNAPSHOT</version>
   </parent>
   <artifactId>devtown-domain</artifactId>
-  <name>DevTown Domain Model</name>
+  <name>DevTown :: Domain</name>
 </project>

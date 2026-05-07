@@ -9,5 +9,5 @@
     <version>0.2-SNAPSHOT</version>
   </parent>
   <artifactId>devtown-review</artifactId>
-  <name>DevTown Review</name>
+  <name>DevTown :: Review</name>
 </project>
