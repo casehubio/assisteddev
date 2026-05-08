@@ -3,11 +3,108 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>io.casehub</groupId>
     <artifactId>casehub-devtown</artifactId>
     <version>0.2-SNAPSHOT</version>
   </parent>
+
   <artifactId>devtown-app</artifactId>
   <name>DevTown :: App</name>
+  <description>Quarkus assembly — REST entry points, notification wiring, runtime deps</description>
+
+  <dependencies>
+    <!-- devtown modules -->
+    <dependency>
+      <groupId>io.casehub</groupId>
+      <artifactId>devtown-domain</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.casehub</groupId>
+      <artifactId>devtown-review</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.casehub</groupId>
+      <artifactId>devtown-queue</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.casehub</groupId>
+      <artifactId>devtown-github</artifactId>
+    </dependency>
+
+    <!-- foundation runtime -->
+    <dependency>
+      <groupId>io.casehub</groupId>
+      <artifactId>casehub-qhorus</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.casehub</groupId>
+      <artifactId>casehub-ledger</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.casehub</groupId>
+      <artifactId>casehub-work</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.casehub</groupId>
+      <artifactId>casehub-connectors</artifactId>
+    </dependency>
+
+    <!-- Quarkus extensions -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-rest</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-rest-jackson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-jdbc-h2</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-health</artifactId>
+    </dependency>
+
+    <!-- test -->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.casehub</groupId>
+      <artifactId>casehub-qhorus-testing</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>io.quarkus.platform</groupId>
+        <artifactId>quarkus-maven-plugin</artifactId>
+        <version>${quarkus.platform.version}</version>
+        <extensions>true</extensions>
+        <executions>
+          <execution>
+            <goals>
+              <goal>build</goal>
+              <goal>generate-code</goal>
+              <goal>generate-code-tests</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>
