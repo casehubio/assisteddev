@@ -53,11 +53,11 @@ Before any git operation, run `git rev-parse --show-toplevel` to confirm which r
 
 | Artifact   | Destination | Notes |
 |------------|-------------|-------|
-| adr        | workspace   | |
-| blog       | workspace   | |
-| design     | workspace   | |
+| adr        | project     | lands in `docs/adr/` |
+| blog       | project     | published externally via publish-blog (blog-routing.yaml) |
+| design     | workspace   | merged into DESIGN.md at epic close |
 | snapshots  | workspace   | |
-| specs      | workspace   | |
+| specs      | project     | lands in `docs/specs/` |
 | handover   | workspace   | |
 
 ---
