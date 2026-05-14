@@ -95,9 +95,23 @@ type: java
 
 ---
 
+## Agentic Harness Goals
+
+**Read first:** `~/claude/casehub/parent/docs/AGENTIC-HARNESS-GUIDE.md`
+
+**Primary goal:** Reference architecture and field showcase for Java developers in software engineering and DevOps — demonstrating formal accountability, tamper-evident review records, and adaptive routing in a domain every developer knows from daily practice.
+
+**Secondary goal:** LLM and human tutorial material, produced as a by-product of building the application correctly. The tutorial structure emerges from the layered adoption sequence — do not design for the tutorial.
+
+**LAYER-LOG.md** (`LAYER-LOG.md` at project root) is the primary new artifact. A layer is not complete until its entry is written. See the AML reference implementation and `docs/protocols/universal/layer-log.md` in casehub-parent for the format.
+
+---
+
 ## What This Project Is
 
-`casehub-devtown` is the **AI-assisted software development application** built on the CaseHub platform foundation. It is the CaseHub answer to Gastown — a production software engineering coordination system — but built on a domain-agnostic foundation rather than baked into infrastructure.
+`casehub-devtown` is an **agentic harness for software engineering coordination** built on the CaseHub platform foundation. It coordinates specialist code reviewers, human review task gates with SLA, and adaptive PR routing based on code content — producing a tamper-evident review record where every missed finding is traceable. Field showcase and tutorial for Java developers in software engineering and DevOps.
+
+It is the CaseHub answer to Gastown — a production software engineering coordination system — but built on a domain-agnostic foundation rather than baked into infrastructure.
 
 The foundation (casehub-engine, casehub-qhorus, casehub-ledger, casehub-work, casehub-connectors) has **no domain knowledge**. It knows about cases, bindings, workers, commitments, trust, and audit. devtown provides the software engineering domain logic on top of those primitives: what a PR review is, what a merge queue does, what capabilities are required for what work, how trust accumulates from review outcomes.
 
@@ -122,7 +136,17 @@ Never add to the foundation what is specific to this domain. Never re-implement 
 
 ---
 
-## Reference Documents
+## Reference Documents (casehub-parent)
+
+| Document | What it covers |
+|----------|---------------|
+| `~/claude/casehub/parent/docs/AGENTIC-HARNESS-GUIDE.md` | Goals, what to produce, retroactive work instructions, layer maintenance |
+| `~/claude/casehub/parent/docs/repos/casehub-devtown.md` | Harness structure, tutorial layers table, layer status |
+| `~/claude/casehub/parent/docs/tutorial-strategy.md` | Devtown tutorial layers §7.5 — teaching objectives and code sketches per layer |
+| `~/claude/casehub/parent/docs/protocols/casehub/HARNESS-INDEX.md` | CaseHub app protocols |
+| `~/claude/casehub/parent/docs/protocols/universal/INDEX.md` | Universal Java/Quarkus protocols |
+
+## Reference Documents (this repo)
 
 These live in `docs/` in this repo and should be read before any significant implementation:
 
