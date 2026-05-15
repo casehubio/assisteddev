@@ -103,7 +103,11 @@ type: java
 
 **Secondary goal:** LLM and human tutorial material, produced as a by-product of building the application correctly. The tutorial structure emerges from the layered adoption sequence — do not design for the tutorial.
 
-**LAYER-LOG.md** (`LAYER-LOG.md` at project root) is the primary new artifact. A layer is not complete until its entry is written. See the AML reference implementation and `docs/protocols/universal/layer-log.md` in casehub-parent for the format.
+**LAYER-LOG.md** (`LAYER-LOG.md` at project root) is the primary new artifact. A layer is not complete until its entry is fully written — but entries are written incrementally across sessions. Write what is known now; mark pending sections with `🔲` including expected content so future sessions can fill them in without context reconstruction.
+
+**Epics ≠ layers.** Epics organize work by build convenience; layers organize knowledge by teaching progression. One layer may span multiple epics. The layer table in `../parent/docs/repos/casehub-devtown.md` tracks layer status (pending / in progress / complete) — update it when a layer makes meaningful progress, not only when it finishes.
+
+See `docs/protocols/universal/layer-log.md` in casehub-parent for the full format and placeholder guidance.
 
 ---
 
