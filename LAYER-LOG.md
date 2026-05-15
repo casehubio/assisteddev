@@ -5,7 +5,7 @@ Structured record of what was built at each layer, optimised for LLM consumption
 Each entry documents one layer of the adoption sequence. Entries are written when work on that layer begins — not before. Sections marked `🔲` within an entry are placeholders: the work for that section isn't done yet, but the expected content or pointer is included so future sessions can fill it in without reconstructing context.
 
 Cross-references:
-- Blog entries: workspace `blog/` (`/Users/mdproctor/claude/public/casehub/devtown/blog/`)
+- Blog entries: workspace `blog/` (staged; published to mdproctor.github.io/_notes/ via `publish-blog`)
 - Design specs: project `docs/specs/`
 - Improvement log: `docs/PROGRESS.md` (DT-NNN entries)
 - Architecture comparison: `docs/gastown-casehub-analysis-v2.md`
@@ -77,6 +77,7 @@ String comment = commentService.post(pr, security, arch);
 **`@DefaultBean` displacement pattern (from AML Layer 1).**
 The naive service carries `@DefaultBean`. Each subsequent layer adds an `@ApplicationScoped` implementation without it — CDI displacement means the new one wins, the naive one stays in the build but is inactive. Both classes coexist; no code is deleted across layers.
 
+Expected pattern (`NaivePrReviewService` not yet built — see §What it shows):
 ```java
 @ApplicationScoped
 @DefaultBean  // displaced by any @ApplicationScoped impl in the same deployment
@@ -92,14 +93,29 @@ Initially written as a concrete method in `DevtownCapabilityRegistry` calling th
 **Vocabulary split rationale.**
 13 flat Gastown tags → 4 typed classes. The split emerged from recognising that `security-review`, `batch-bisect`, and `notify` are not the same kind of thing and should not route through the same trust infrastructure. Full rationale: `docs/gastown-casehub-analysis-v2.md` §DT-001; blog `2026-05-11-mdp01-the-vocabulary-problem.md`.
 
+**`BATCH_BISECT` / `COORDINATED_MERGE` / `COORDINATED_ROLLBACK` are not capability tags.**
+These were in the original Gastown-derived 13-tag vocabulary and removed. They are orchestration operations — expressed as CasePlanModel binding structures in Epics 4/5, not as trust-scored capability strings. Adding them to `DevtownCapabilityRegistry` would mean routing logic evaluating them as agent assignments, which is wrong. Naming review still open: devtown#20.
+
 ### Gotchas
 
-- **`isKnown()` bypass bug**: initial implementation called the static field directly, bypassing `capabilities()`. Any subclass overriding `capabilities()` would have gotten wrong results. Fixed by making `isKnown()` a `default` method on the SPI (`8b3305e`). Write a test for this case when adding the first subclass.
-- **`NOTIFY` removed from vocabulary**: connector calls are not trust-scored capabilities. Including `notify` in the vocabulary would mean `TrustGateService.meetsThreshold()` gets called on a Slack message. `casehub-connectors` handles delivery; the case plan model calls it directly.
-- **`BATCH_BISECT` / `COORDINATED_MERGE` / `COORDINATED_ROLLBACK` deferred**: these are orchestration operations expressed as CasePlanModel binding structures, not capability tags. They were in the original Gastown-derived vocabulary and removed. Naming review still open: devtown#20.
-- **`minimumObservations` is a credibility gate, not a capability gate**: a trust score of 0.85 from 2 attestations is noise; from 50 it's signal. `RoutingPolicy.isBootstrap(agentObservations)` makes this explicit. On day 1 of a fresh installation, every agent is in bootstrap — routing is identical to Gastown's GUPP model. Routing quality improves automatically as attestations accumulate. See DT-006 in `docs/PROGRESS.md`.
+- **`isKnown()` returns wrong results on a subclass**
+  - Symptom: a `CapabilityRegistry` subclass that overrides `capabilities()` returns incorrect results from `isKnown()` — capabilities that should be known return false, or vice versa
+  - Cause: initial implementation called the backing static field directly, bypassing the virtual `capabilities()` method. Subclass override was silently ignored.
+  - Fix: `isKnown()` promoted to a `default` method on the SPI interface calling `capabilities()` (`8b3305e`). Write a test for `isKnown()` on a subclass that overrides `capabilities()` before adding the first subclass.
+
+- **Adding `NOTIFY` to the vocabulary causes nonsensical trust threshold checks**
+  - Symptom: `TrustGateService.meetsThreshold()` called with a notification capability tag; threshold evaluation makes no semantic sense for a delivery operation
+  - Cause: `NOTIFY` looks like a capability but is a connector call — it has no trust-scored actor and no quality dimension
+  - Fix: remove from vocabulary; call `casehub-connectors` directly from the case plan model. `NOTIFY` was explicitly removed from the Gastown-derived 13-tag vocabulary for this reason.
+
+- **On day 1, trust-based routing appears identical to Gastown (no differentiation)**
+  - Symptom: routing assigns work to agents without apparent trust weighting; the `RoutingPolicy` thresholds seem to have no effect
+  - Cause: all agents are in bootstrap mode (`isBootstrap()` returns true) because `minimumObservations` hasn't been reached. This is correct — a trust score from 2–3 attestations is noise, not signal. Routing falls back to availability, identical to Gastown's GUPP model.
+  - Fix: no fix required; this is the Phase 0 maturity model by design. Routing quality improves automatically as attestations accumulate. See DT-006 in `docs/PROGRESS.md` for the four-phase model.
 
 ### Pattern to replicate (in another domain)
+
+Steps marked `🔲` do not yet have a devtown reference implementation — the pattern is documented from design; the code will exist once Layer 1 is complete.
 
 1. Create `{domain}-domain` Maven module — zero framework imports, zero JPA, no Quarkus
 2. Identify your domain's work types. Ask: are they analytical (trust-scored on quality), operational (trust-scored on outcome), human decisions (with SLA and lifecycle), or system-oversight (triggered by uncertainty)? Create a typed class per category — not a flat string list
@@ -108,8 +124,8 @@ Initially written as a concrete method in `DevtownCapabilityRegistry` calling th
 5. Implement the populated default registry in `{domain}` — concrete class, no CDI
 6. Create `{domain}-app` Maven module — depends on `{domain}-domain`; owns all Quarkus wiring
 7. Add a one-liner `@ApplicationScoped` CDI wrapper in `{domain}-app` extending your registry
-8. Implement the naive service with `@ApplicationScoped @DefaultBean` — direct calls, no CaseHub, gap comments for every compliance gap
-9. Expose `POST /api/{domain-noun}` via a REST resource injecting the port interface
+8. 🔲 Implement the naive service with `@ApplicationScoped @DefaultBean` — direct calls, no CaseHub, gap comments for every compliance gap
+9. 🔲 Expose `POST /api/{domain-noun}` via a REST resource injecting the port interface
 10. Boot test: verify `@QuarkusTest` starts and CDI discovers the registry bean
-11. Test the naive service: plain `new`, no Quarkus — verify gap comments are exercisable
+11. 🔲 Test the naive service: plain `new`, no Quarkus — verify gap comments are exercisable
 
