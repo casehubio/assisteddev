@@ -215,5 +215,11 @@ class PrReviewBindingConditionTest {
             data.put("humanApproval", Map.of("status", "approved"));
             assertThat(condition("merge").test(ctx(data))).isTrue();
         }
+        @Test void fires_whenNotSecuritySensitiveAndNoSecurityReview() {
+            var data = new java.util.HashMap<>(allApproved());
+            data.remove("securityReview");
+            // codeAnalysis already has securitySensitive=false in allApproved() via analysis(false, false)
+            assertThat(condition("merge").test(ctx(data))).isTrue();
+        }
     }
 }

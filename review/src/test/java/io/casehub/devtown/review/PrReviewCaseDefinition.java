@@ -152,13 +152,11 @@ final class PrReviewCaseDefinition {
         def.getBindings().add(Binding.builder().name("merge").on(trigger)
             .when(new LambdaExpressionEvaluator(ctx -> {
                 Object linesChanged = ctx.getPath("pr.linesChanged");
-                Object threshold    = ctx.getPath("policy.humanApprovalThreshold");
                 boolean humanOk =
-                    (linesChanged instanceof Number l &&
-                     threshold instanceof Number t &&
-                     l.intValue() <= t.intValue()) ||
+                    (linesChanged instanceof Number l && l.intValue() <= humanApprovalThreshold) ||
                     "approved".equals(ctx.getPath("humanApproval.status"));
-                return "APPROVED".equals(ctx.getPath("securityReview.outcome")) &&
+                return (Boolean.FALSE.equals(ctx.getPath("codeAnalysis.securitySensitive")) ||
+                            "APPROVED".equals(ctx.getPath("securityReview.outcome"))) &&
                     (Boolean.FALSE.equals(ctx.getPath("codeAnalysis.architectureCrossing")) ||
                         "APPROVED".equals(ctx.getPath("architectureReview.outcome"))) &&
                     "APPROVED".equals(ctx.getPath("styleCheck.outcome")) &&
